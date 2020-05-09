@@ -2,7 +2,7 @@
 
 namespace Camera {
 
-	Camera::Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw, GLfloat pitch)
+	Camera::Camera(glm::vec3 position , glm::vec3 up , GLfloat yaw, GLfloat pitch)
 		:Front(glm::vec3(0.0f, -6.0f, -10.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY),
 		Zoom(ZOOM) {
 		this->Position = position;

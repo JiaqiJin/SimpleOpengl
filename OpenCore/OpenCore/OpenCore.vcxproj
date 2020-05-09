@@ -150,20 +150,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationMesh.cpp" />
+    <ClCompile Include="AnimationModel.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ckAssimpTool.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="SceneController.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="stb_image.c" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationMesh.h" />
+    <ClInclude Include="AnimationModel.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ckAssimpTool.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="SceneController.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Shaders\AnimationModel.fs" />
+    <None Include="res\Shaders\AnimationModel.vs" />
+    <None Include="res\Shaders\AniShadow.fs" />
+    <None Include="res\Shaders\AniShadow.vs" />
+    <None Include="res\Shaders\shadow.fs" />
+    <None Include="res\Shaders\shadow.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

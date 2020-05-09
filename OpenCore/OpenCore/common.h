@@ -16,8 +16,8 @@ using namespace std;
 #define SHADOW_WIDTH 4096
 #define SHADOW_HEIGHT 4096
 
-const GLfloat screenWidth = 1600;
-const GLfloat screenHeight = 1000;
+const GLfloat screenWidth = 900;
+const GLfloat screenHeight = 700;
 const glm::vec3 lightPos(300, 300, 0);
 const glm::vec3 sunPos(900, 900, 900);
 const glm::vec3 ambientLight(0.3f);
