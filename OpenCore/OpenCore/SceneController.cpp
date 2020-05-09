@@ -2,7 +2,15 @@
 
 Scene::Scene(float time)
 {
+	skybox = new Skybox;
 	
+	snow = new Snow::Snow;
+	
+	flame = new Flame::Flame;
+	fountain = new Fountain::Fountain;
+	terrain = new Terrain(string(ShaderPath + "Textures/Height.png"));
+	water = new Water(time);
+	std::cout << "terrain loaded over!" << std::endl;
 	castle = new Model(ShaderPath + "Model/version_5/version_5.obj", false);
 	fountainPool = new Model(ShaderPath + "Model/Fountain/fountain.obj", true);
 	fireheap = new Model(ShaderPath + "Model/fire/fireheap.obj", false);
@@ -16,9 +24,10 @@ Scene::Scene(float time)
 		string(ShaderPath + "Shaders/AnimationModel.fs").c_str());
 	batShader->use();
 	batShader->setInt("texture_diffuse1", 0);
+	glUseProgram(0);
+	//bat = new AnimationModel(batShader, "C:/Users/Yang/Desktop/OpenGL-Demo/SceneDemo/res/Model/bat/use2.FBX");
+	//bat = new AnimationModel(batShader, string(ShaderPath + "Model/bat_ascii/monster/test.FBX"));
 
-
-	
 	GLfloat near_plane = 1.0f, far_plane = 900.0f;
 	GLfloat ws = 800.0f;
 	glm::mat4 lightProjection = glm::ortho(-ws, ws, -ws, ws, near_plane, far_plane);
@@ -34,7 +43,7 @@ Scene::Scene(float time)
 	glDrawBuffer(GL_NONE);
 	//glReadBuffer(GL_NONE);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		cout << "Framebuffer Error" << endl;
+		cout << "Error framebuffer" << endl;
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -58,19 +67,26 @@ Scene::Scene(float time)
 	castleShader->setMat4("lightSpaceMatrix", lightSpaceMatrix2);
 
 	
+	snow->setLightSpace(lightSpaceMatrix1);
+	fountain->setLightSpace(lightSpaceMatrix1);
+	flame->setLightSpace(lightSpaceMatrix1);
+	terrain->setLightSpace(lightSpaceMatrix2);
 }
 
 Scene::~Scene()
 {
+	delete skybox;
 	
-	/*delete fireWork;*/
-	//delete bat;
+	
+	delete castle;
+	
 	delete castleShader;
 	delete batShader;
 	delete fountainPool;
 	delete shadowShader;
 	delete fireheap;
-	
+	delete flame;
+	delete terrain;
 }
 
 void Scene::render(glm::mat4 model, glm::mat4& view, glm::mat4& projection,
@@ -91,7 +107,16 @@ void Scene::OutsideRender(glm::mat4 model, glm::mat4& view, glm::mat4& projectio
 	glViewport(0, 0, screenWidth, screenHeight);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	skybox->Draw(view, projection);
+	
+	//floor->render(model, view, projection, camera, depthMap, lightSpaceMatrix2);
+	fountain->Render(deltaTime, model, view, projection);
+	//fireWork->Render(deltaTime, model, view, projection);
+	snow->Render(deltaTime, model, view, projection);
+	//debug->render(model,view,projection,depthMap);
 
+	terrain->render(model, view, projection, depthMap);
+	flame->Render(deltaTime, model, view, projection);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	castleShader->use();
@@ -123,14 +148,14 @@ void Scene::OutsideRender(glm::mat4 model, glm::mat4& view, glm::mat4& projectio
 	glDisable(GL_CULL_FACE);
 	glUseProgram(0);
 
+	water->render(model, view, projection, deltaTime);
 
+	//model = glm::mat4(1.0f);
+	//model = glm::rotate(model, (float)glm::radians((-timeflow)*80.0f), glm::vec3(0, 1, 0));
+	//model = glm::translate(model, glm::vec3(200, 130, 0));
+	//model = glm::scale(model, glm::vec3(0.4));
+	//bat->Draw(model, view, projection, timeflow);
 
-	/*model = glm::mat4(1.0f);
-	model = glm::rotate(model, (float)glm::radians((-timeflow)*80.0f), glm::vec3(0, 1, 0));
-	model = glm::translate(model, glm::vec3(200, 130, 0));
-	model = glm::scale(model, glm::vec3(0.4));
-	bat->Draw(model, view, projection, timeflow);
-	*/
 }
 
 void Scene::OutsideRenderShadow(glm::mat4 model, Camera::Camera& camera, float deltaTime, float& timeflow)
@@ -164,7 +189,20 @@ void Scene::OutsideRenderShadow(glm::mat4 model, Camera::Camera& camera, float d
 
 	glDisable(GL_CULL_FACE);
 
+	model = glm::mat4(1.0f);
+	shadowShader->setMat4("model", model);
 
+
+	//model = glm::mat4(1.0f);
+	//model = glm::rotate(model, (float)glm::radians((-timeflow)*80.0f), glm::vec3(0, 1, 0));
+	//model = glm::translate(model, glm::vec3(200, 130, 0));
+	//model = glm::scale(model, glm::vec3(0.4));
+	//bat->DrawShadow(model, lightSpaceMatrix1, timeflow);
+
+	snow->RenderShadow(deltaTime);
+	fountain->RenderShadow(deltaTime);
+	//flame->RenderShadow(deltaTime);
+	terrain->renderShadow(shadowShader);
 }
 
 

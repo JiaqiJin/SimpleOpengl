@@ -2,7 +2,8 @@
 
 namespace Camera {
 
-	Camera::Camera(glm::vec3 position , glm::vec3 up , GLfloat yaw, GLfloat pitch)
+
+	Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
 		:Front(glm::vec3(0.0f, -6.0f, -10.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY),
 		Zoom(ZOOM) {
 		this->Position = position;
@@ -25,7 +26,7 @@ namespace Camera {
 		return glm::lookAt(this->Position, this->Position + this->Front, this->Up);
 	}
 
-	void Camera::ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime) {
+	void Camera::ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime, Terrain& terrain) {
 		GLfloat velocity = this->MovementSpeed * deltaTime;
 		if (direction == FORWARD)
 			this->Position += this->Front * velocity;
@@ -35,9 +36,9 @@ namespace Camera {
 			this->Position -= this->Right * velocity;
 		if (direction == RIGHTS)
 			this->Position += this->Right * velocity;
-		//this->Position.y = terrain.Travel(Position.z, Position.x) + 17;
+		this->Position.y = terrain.Travel(Position.z, Position.x) + 17;
 	}
-	
+
 	void Camera::ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch) {
 		xoffset *= this->MouseSensitivity;
 		yoffset *= this->MouseSensitivity;

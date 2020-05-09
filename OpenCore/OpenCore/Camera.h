@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include "Terrain.h"
 
 namespace Camera {
 
@@ -45,8 +46,7 @@ namespace Camera {
 
 		glm::mat4 GetViewMatrix();
 
-		//void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime, Terrain& terrain);
-		void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime);
+		void ProcessKeyboard(Camera_Movement direction, GLfloat deltaTime, Terrain& terrain);
 
 		void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch = true);
 
